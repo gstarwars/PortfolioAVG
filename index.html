@@ -4,100 +4,908 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gareth Choo — Animation, XR & Game Design Portfolio</title>
+  <meta name="description" content="Portfolio of Gareth Choo featuring animation, XR, stop motion and short film work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --bg: #070d18;
+      --bg-2: #0c1424;
+      --panel: rgba(9, 16, 30, 0.94);
+      --panel-2: rgba(14, 24, 43, 0.98);
+      --panel-soft: rgba(21, 34, 59, 0.82);
+      --line: rgba(76, 126, 255, 0.22);
+      --line-strong: rgba(76, 126, 255, 0.45);
+      --text: #edf4ff;
+      --text-soft: #b8c7df;
+      --muted: #7f93b6;
+      --blue: #4c7eff;
+      --blue-bright: #73c0ff;
+      --cyan: #52e5ff;
+      --orange: #ff944d;
+      --orange-bright: #ffb36f;
+      --green: #7bffb2;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+      --max: 1220px;
+      --corner: 18px;
+      --corner-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0f1a;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(82,229,255,0.10), transparent 22%),
+        radial-gradient(circle at top right, rgba(255,148,77,0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, #08101d 50%, #070d18 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.75), transparent 96%);
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(5, 10, 19, 0.84);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: Orbitron, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       color: white;
     }
 
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: auto;
+    .brand span { color: var(--blue-bright); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
     }
 
-    h1, h2 {
+    nav a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .hero {
+      padding: 74px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(11,18,34,0.98), rgba(9,16,30,0.98));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(115,192,255,0.07), transparent 22%, transparent 78%, rgba(255,148,77,0.06));
+      mix-blend-mode: screen;
+    }
+
+    .cut {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    }
+
+    .hero-copy {
+      padding: 52px 44px 36px;
+      min-height: 100%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 18px rgba(82,229,255,0.35);
+    }
+
+    .hero-name {
+      margin: 0 0 18px;
+      line-height: 0.88;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      font-family: Orbitron, sans-serif;
+    }
+
+    .hero-name .solid {
+      display: inline-block;
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      font-weight: 900;
+      color: #f4f8ff;
+    }
+
+    .hero-name .outline {
+      display: inline-block;
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--blue);
+      text-shadow: 0 0 20px rgba(76,126,255,0.18);
+    }
+
+    .hero-role {
+      color: var(--orange-bright);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.26em;
+      font-weight: 800;
+      margin-bottom: 22px;
+      text-shadow: 0 0 18px rgba(255,148,77,0.12);
+    }
+
+    .hero-copy p {
+      color: var(--text-soft);
+      font-size: 1.02rem;
+      max-width: 62ch;
+      margin: 0 0 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 18px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      min-width: 190px;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      color: #07111f;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      box-shadow: 0 0 24px rgba(82,229,255,0.16);
+    }
+
+    .btn-secondary {
+      color: white;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,0.03);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px 14px 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.08);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    .metric strong {
+      display: block;
+      font-family: Orbitron, sans-serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      font-size: 0.74rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+    }
+
+    .focus-card {
+      padding: 24px;
+      min-height: 100%;
+    }
+
+    .focus-card h2,
+    .section-header h2,
+    .project-content h3,
+    .list-panel h3,
+    .about-panel h3,
+    .contact-panel h3 {
+      margin: 0 0 14px;
+      font-family: Orbitron, sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .focus-card p,
+    .section-header p,
+    .project-content p,
+    .about-panel p,
+    .contact-panel p {
+      color: var(--text-soft);
+    }
+
+    .focus-card p { margin: 0 0 16px; }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 8px 11px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      color: #dff3ff;
+      background: rgba(82,229,255,0.08);
+      border: 1px solid rgba(82,229,255,0.18);
+      clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+    }
+
+    .ui-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 250px;
+      border: 1px solid var(--line);
+    }
+
+    .ui-grid div {
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      padding: 18px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 800;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .ui-grid div:nth-child(1),
+    .ui-grid div:nth-child(4) {
+      background: linear-gradient(180deg, rgba(76,126,255,0.10), rgba(82,229,255,0.04));
     }
 
     section {
-      margin: 60px 0;
+      padding: 26px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      font-size: 1.4rem;
+      color: white;
+    }
+
+    .section-header p {
+      margin: 0;
+      max-width: 55ch;
+    }
+
+    .showreel-card {
+      padding: 18px;
     }
 
     .video-frame {
       width: 100%;
       aspect-ratio: 16 / 9;
-      margin: 20px 0;
+      overflow: hidden;
+      background: #050812;
+      border: 1px solid rgba(255,255,255,0.08);
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
     }
 
-    iframe {
+    .video-frame iframe {
       width: 100%;
       height: 100%;
-      border: none;
+      display: block;
+      border: 0;
+      background: #03060d;
     }
 
-    .project {
-      margin-bottom: 50px;
+    .video-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 14px 4px 2px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .project-card {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      overflow: hidden;
+    }
+
+    .project-media {
+      min-height: 320px;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+        linear-gradient(135deg, rgba(76,126,255,0.05), transparent 35%);
+    }
+
+    .project-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+
+    .project-type {
+      font-size: 0.72rem;
+      color: var(--blue-bright);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .project-content h3 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.02;
+      color: white;
+    }
+
+    .project-content p {
+      margin: 0;
+      font-size: 0.97rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tags span {
+      padding: 7px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .project-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .meta-box {
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .meta-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .meta-box span {
+      color: white;
+      font-size: 0.92rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .list-panel,
+    .about-panel,
+    .contact-panel {
+      padding: 26px;
+    }
+
+    .clean-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .clean-list li {
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      color: var(--text-soft);
+    }
+
+    .clean-list li strong {
+      color: white;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .footer {
+      padding: 18px 0 34px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .project-card,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .project-media {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topbar-inner {
+        align-items: flex-start;
+      }
+
+      nav ul {
+        gap: 10px 14px;
+      }
+
+      .hero-copy,
+      .focus-card,
+      .showreel-card,
+      .project-content,
+      .list-panel,
+      .about-panel,
+      .contact-panel {
+        padding: 20px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-name .solid,
+      .hero-name .outline {
+        font-size: clamp(2.6rem, 16vw, 4rem);
+      }
     }
   </style>
 </head>
-
 <body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Gareth<span> Choo</span></div>
+      <nav>
+        <ul>
+          <li><a href="#showreel">Showreel</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <div class="container">
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="panel cut hero-copy">
+          <div class="eyebrow">Portfolio / Animation, XR & Game Design</div>
+          <h1 class="hero-name">
+            <span class="solid">Gareth</span><br>
+            <span class="outline">Choo</span>
+          </h1>
+          <div class="hero-role">Animation · VFX · Game Design · Extended Reality</div>
+          <p>
+            I create playful, story-driven digital experiences across animation, game design, XR and short film. My work blends visual storytelling, worldbuilding and experimentation — from LEGO-inspired VR interaction to stop-motion character performance and personal film projects.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">View selected work</a>
+            <a class="btn btn-secondary" href="#showreel">Watch showreel</a>
+          </div>
+          <div class="hero-metrics">
+            <div class="metric"><strong>4</strong><span>Featured projects</span></div>
+            <div class="metric"><strong>3+</strong><span>Creative disciplines</span></div>
+            <div class="metric"><strong>AUT</strong><span>Design student</span></div>
+            <div class="metric"><strong>NZ</strong><span>Auckland based</span></div>
+          </div>
+        </div>
 
-    <h1>Gareth Choo Portfolio</h1>
+        <div class="hero-side">
+          <aside class="panel cut focus-card">
+            <h2>Creative focus</h2>
+            <p>
+              My practice sits between animation craft, interactive media and visual development. I enjoy building projects that feel expressive, tactile and emotionally memorable.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Maya</span>
+              <span class="pill">Unity</span>
+              <span class="pill">XR</span>
+              <span class="pill">Stop Motion</span>
+              <span class="pill">Short Film</span>
+              <span class="pill">Storyboarding</span>
+            </div>
+          </aside>
 
-    <!-- 🎬 SHOWREEL -->
-    <section>
-      <h2>Showreel</h2>
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/yzBxf2TO4wg" allowfullscreen></iframe>
+          <aside class="panel cut focus-card" style="padding:0;">
+            <div class="ui-grid">
+              <div>Unity / XR</div>
+              <div>Maya Pipeline</div>
+              <div>Visual Narrative</div>
+              <div>Game Design</div>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
-    <!-- 🎮 PROJECTS -->
-    <section>
-      <h2>Projects</h2>
-
-      <!-- LEGO VR -->
-      <div class="project">
-        <h3>LEGO VR Demonstration</h3>
+    <section id="showreel">
+      <div class="container panel cut showreel-card">
+        <div class="section-header">
+          <div>
+            <h2>Featured showreel</h2>
+            <p>A quick look at movement, timing, action and visual storytelling.</p>
+          </div>
+        </div>
         <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/9F14bKmIVDI" allowfullscreen></iframe>
+          <iframe
+            src="https://www.youtube.com/embed/yzBxf2TO4wg"
+            title="Mecha Attack Showreel"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-caption">
+          <span>Featured piece: <strong style="color:white; font-weight:800;">Mecha Attack</strong></span>
+          <span>Format: animated short sequence</span>
         </div>
       </div>
-
-      <!-- MECHA -->
-      <div class="project">
-        <h3>Mecha Attack</h3>
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/yzBxf2TO4wg" allowfullscreen></iframe>
-        </div>
-      </div>
-
-      <!-- BLOBBUSTERS -->
-      <div class="project">
-        <h3>BlobBusters</h3>
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/HjeLXY6E0Og" allowfullscreen></iframe>
-        </div>
-      </div>
-
-      <!-- DRIFTWOOD -->
-      <div class="project">
-        <h3>Driftwood Keeps Time</h3>
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/_HPUALUmFO0" allowfullscreen></iframe>
-        </div>
-      </div>
-
     </section>
 
-  </div>
+    <section id="projects">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Selected projects</h2>
+            <p>Four projects that reflect my interests in animation, XR, interactive design and film storytelling.</p>
+          </div>
+        </div>
 
+        <div class="projects-grid">
+          <article class="panel cut project-card">
+            <div class="project-media">
+              <div class="video-frame" style="aspect-ratio: 16/10;">
+                <iframe 
+                  src="https://www.youtube.com/embed/9F14bKmIVDI"
+                  title="LEGO VR Demonstration"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-type">XR / Interactive Design</div>
+              <h3>LEGO VR Demonstration</h3>
+              <p>
+                A VR concept exploring interactive world-building and playful user experience. This project reflects my interest in spatial design, accessible interaction and game-like systems that encourage curiosity and exploration.
+              </p>
+              <div class="tags">
+                <span>VR</span><span>Unity</span><span>Interaction Design</span><span>Worldbuilding</span>
+              </div>
+              <div class="project-meta-grid">
+                <div class="meta-box"><strong>Focus</strong><span>XR experience design</span></div>
+                <div class="meta-box"><strong>Role</strong><span>Concept, design, prototype</span></div>
+                <div class="meta-box"><strong>Strength</strong><span>Spatial thinking</span></div>
+                <div class="meta-box"><strong>Outcome</strong><span>Playable demo</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel cut project-card">
+            <div class="project-media">
+              <div class="video-frame" style="aspect-ratio: 16/10;">
+                <iframe 
+                  src="https://www.youtube.com/embed/yzBxf2TO4wg"
+                  title="Mecha Attack"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-type">Animation / Action Sequence</div>
+              <h3>Mecha Attack</h3>
+              <p>
+                A stylised action-focused project built around dramatic motion, timing and a fun narrative twist. This piece demonstrates my interest in energetic spectacle, visual pacing and animated storytelling with a strong sense of payoff.
+              </p>
+              <div class="tags">
+                <span>Animation</span><span>Storytelling</span><span>Action</span><span>Visual Timing</span>
+              </div>
+              <div class="project-meta-grid">
+                <div class="meta-box"><strong>Focus</strong><span>Cinematic motion</span></div>
+                <div class="meta-box"><strong>Role</strong><span>Concept to final edit</span></div>
+                <div class="meta-box"><strong>Strength</strong><span>Visual energy</span></div>
+                <div class="meta-box"><strong>Outcome</strong><span>Short animated sequence</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel cut project-card">
+            <div class="project-media">
+              <div class="video-frame" style="aspect-ratio: 16/10;">
+                <iframe 
+                  src="https://www.youtube.com/embed/HjeLXY6E0Og"
+                  title="BlobBusters"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-type">Stop Motion / Character Performance</div>
+              <h3>BlobBusters</h3>
+              <p>
+                A stop-motion animation project focused on expressive character movement, comedic timing and handmade visual charm. It shows my ability to develop personality through movement and build a clear action sequence frame by frame.
+              </p>
+              <div class="tags">
+                <span>Stop Motion</span><span>Character Animation</span><span>Comedy</span><span>Practical Craft</span>
+              </div>
+              <div class="project-meta-grid">
+                <div class="meta-box"><strong>Focus</strong><span>Performance and timing</span></div>
+                <div class="meta-box"><strong>Role</strong><span>Animation and direction</span></div>
+                <div class="meta-box"><strong>Strength</strong><span>Expressive motion</span></div>
+                <div class="meta-box"><strong>Outcome</strong><span>Completed stop-motion short</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel cut project-card">
+            <div class="project-media">
+              <div class="video-frame" style="aspect-ratio: 16/10;">
+                <iframe 
+                  src="https://www.youtube.com/embed/_HPUALUmFO0"
+                  title="Driftwood Keeps Time"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-type">Short Film / Personal Storytelling</div>
+              <h3>Driftwood Keeps Time</h3>
+              <p>
+                A reflective short film project centred on memory, mood and emotional storytelling. This work shows a more personal side of my practice and highlights my interest in atmosphere, pacing and cinematic composition.
+              </p>
+              <div class="tags">
+                <span>Short Film</span><span>Visual Narrative</span><span>Emotion</span><span>Atmosphere</span>
+              </div>
+              <div class="project-meta-grid">
+                <div class="meta-box"><strong>Focus</strong><span>Memory-driven narrative</span></div>
+                <div class="meta-box"><strong>Role</strong><span>Development and edit</span></div>
+                <div class="meta-box"><strong>Strength</strong><span>Visual mood</span></div>
+                <div class="meta-box"><strong>Outcome</strong><span>Short film piece</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container two-col">
+        <div class="panel cut list-panel">
+          <h3>Skills & tools</h3>
+          <ul class="clean-list">
+            <li><strong>Animation:</strong> 2D/3D principles, timing, visual storytelling</li>
+            <li><strong>Game design:</strong> interactive concepts, systems thinking, worldbuilding</li>
+            <li><strong>XR:</strong> spatial design, immersive interaction, prototype thinking</li>
+            <li><strong>Software:</strong> Maya, Unity, Adobe Creative Suite, storyboarding tools</li>
+            <li><strong>Production strengths:</strong> concept development, iteration, presentation</li>
+          </ul>
+        </div>
+
+        <div class="panel cut list-panel">
+          <h3>What I’m interested in learning</h3>
+          <ul class="clean-list">
+            <li><strong>Advanced animation:</strong> stronger character movement and polish</li>
+            <li><strong>Game creation:</strong> design methods that improve interactivity and player experience</li>
+            <li><strong>Film and media theory:</strong> ideas that deepen storytelling and visual analysis</li>
+            <li><strong>Digital media:</strong> new approaches to immersive and hybrid forms</li>
+            <li><strong>Collaboration:</strong> working across creative disciplines and production pipelines</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container two-col">
+        <div class="panel cut about-panel">
+          <h3>About me</h3>
+          <p>
+            I am an AUT design student working across animation, VFX, game design and extended reality. My projects often combine playful concepts with strong visual identity, and I enjoy developing work that feels imaginative but still clear in its storytelling.
+          </p>
+          <p>
+            I am especially interested in how animation and interactive media can overlap — whether through immersive environments, stylised motion, or personal film work that uses strong atmosphere and design to create emotional impact.
+          </p>
+        </div>
+        <div class="panel cut about-panel">
+          <h3>Study direction</h3>
+          <p>
+            This portfolio was prepared to support exchange and course review. It highlights both practical production work and broader creative interests in digital storytelling, animation craft, game-focused thinking and emerging media.
+          </p>
+          <p>
+            My goal is to keep building a body of work that is visually expressive, technically capable and open to experimentation across different creative forms.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container two-col">
+        <div class="panel cut contact-panel">
+          <h3>Contact</h3>
+          <p>If you’d like to view more work or discuss my portfolio, feel free to get in touch.</p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="mailto:your.email@example.com">Email me</a>
+            <a class="btn btn-secondary" href="#showreel">Back to showreel</a>
+          </div>
+        </div>
+        <div class="panel cut contact-panel">
+          <h3>Before you submit this</h3>
+          <p>Replace the email button with your real email address. If you host this site online, swap the local MP4 files for YouTube or Vimeo embeds for easier viewing and better performance.</p>
+          <p>For exchange review, this version already gives a strong, polished overview of your practical range and creative direction.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    Gareth Choo — Portfolio site prepared for exchange and course review.
+  </footer>
 </body>
 </html>
